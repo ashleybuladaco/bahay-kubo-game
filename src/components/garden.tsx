@@ -110,25 +110,26 @@ export function Garden({ isOpen, onClose, onOpenShop }: GardenProps): JSX.Elemen
     }
 
     const handleHarvestPlant = async (plantId: string): Promise<void> => {
-        const plant = plantedVegetables.find(p => p.id === plantId)
-        if (!plant || plant.growthStage !== 'ready') return
+    const plant = plantedVegetables.find(p => p.id === plantId)
+    if (!plant) return
 
-        // Award harvest points
-        const harvestPoints = 20 + (plant.waterings * 5)
-        const currentStats = getGardenStats()
-        updateGardenStats({
-            totalPoints: currentStats.totalPoints + harvestPoints,
-            totalVegetablesHarvested: currentStats.totalVegetablesHarvested + 1
-        })
+    const updatedPlant = updatePlantGrowth(plant)
+    if (updatedPlant.growthStage !== 'ready') return
 
-        // Remove plant from garden
-        const updated = removePlantedVegetable(plantId)
-        setPlantedVegetables(updated)
-        setGardenStats(getGardenStats())
+    const harvestPoints = 20 + (updatedPlant.waterings * 5)
+    const currentStats = getGardenStats()
+    updateGardenStats({
+        totalPoints: currentStats.totalPoints + harvestPoints,
+        totalVegetablesHarvested: currentStats.totalVegetablesHarvested + 1
+    })
 
-        // Show harvest success (could add toast here)
-        console.log(`Harvested ${plant.vegetableId} for ${harvestPoints} points!`)
-    }
+    const updated = removePlantedVegetable(plantId)
+    setPlantedVegetables(updated)
+    setGardenStats(getGardenStats())
+
+    console.log(`Harvested ${updatedPlant.vegetableId} for ${harvestPoints} points!`)
+}
+
 
     const getVegetableData = (vegetableId: string) => {
         return vegetables.find(v => v.id === vegetableId)
