@@ -106,32 +106,7 @@ export default function BahayKuboGame(): JSX.Element {
       }, 1000)
     }
   }, [selectedCards, matchedPairs, gameCards, difficulty])
-
-  // Check for game completion
-  useEffect(() => {
-    if (gameStarted && matchedPairs.length === gameCards.length && gameCards.length > 0) {
-      setGameCompleted(true)
-      setGameStarted(false)
-      playSound('victory')
-
-      // Calculate and award points
-      const finalGameScore = score + getPerformanceBonus()
-      const { points: earnedPoints, stars } = calculateGameReward(finalGameScore, timeElapsed, moves, difficulty)
-
-      // Add points and save game to history
-      addPoints(earnedPoints)
-      addGameToHistory({
-        difficulty,
-        score: finalGameScore,
-        moves,
-        timeElapsed,
-        pointsEarned: earnedPoints,
-        stars
-      })
-    }
-  }, [matchedPairs.length, gameCards.length, gameStarted, score, timeElapsed, moves, difficulty])
-
-  // Calculate performance bonus
+// Calculate performance bonus
   const getPerformanceBonus = (): number => {
     if (!gameCompleted) return 0
     const timeBonus = Math.max(0, 300 - timeElapsed) * 10
@@ -142,6 +117,29 @@ export default function BahayKuboGame(): JSX.Element {
   const finalScore = score + getPerformanceBonus()
   const progress = gameCards.length > 0 ? (matchedPairs.length / gameCards.length) * 100 : 0
 
+  // Check for game completion
+ useEffect(() => {
+  if (gameStarted && matchedPairs.length === gameCards.length && gameCards.length > 0) {
+    setGameCompleted(true)
+    setGameStarted(false)
+    playSound('victory')
+
+    const finalGameScore = score + getPerformanceBonus()
+    const { points: earnedPoints, stars } = calculateGameReward(finalGameScore, timeElapsed, moves, difficulty)
+
+    addPoints(earnedPoints)
+    addGameToHistory({
+      difficulty,
+      score: finalGameScore,
+      moves,
+      timeElapsed,
+      pointsEarned: earnedPoints,
+      stars
+    })
+  }
+}, [matchedPairs.length, gameCards.length, gameStarted, score, timeElapsed, moves, difficulty, getPerformanceBonus])
+
+  
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-yellow-50 p-4">
       <div className="container mx-auto max-w-4xl">
@@ -163,7 +161,7 @@ export default function BahayKuboGame(): JSX.Element {
             <CardContent className="p-8 text-center">
               <div className="mb-6">
                 <h1 className="text-4xl font-bold text-green-800 mb-2">
-                  🏠 Bahay Kubo: Memory ng mga Gulay
+                  🏠 Bahay Kubo: Memory ng mga Gulayf
                 </h1>
                 <p className="text-lg text-green-700">
                   Match the vegetables from the beloved Filipino song!
@@ -171,10 +169,11 @@ export default function BahayKuboGame(): JSX.Element {
               </div>
 
               <div className="mb-6 p-4 bg-green-50 rounded-lg">
-                <p className="text-sm text-green-800 italic leading-relaxed">
-                  "Bahay kubo, kahit munti,<br />
-                  Ang halaman doon ay sari-sari..."
-                </p>
+             <p className="text-sm text-green-800 italic leading-relaxed">
+  {`"Bahay kubo, kahit munti,
+  Ang halaman doon ay sari-sari..."`}
+</p>
+
               </div>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
