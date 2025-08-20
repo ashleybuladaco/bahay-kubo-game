@@ -5,7 +5,9 @@ class GameSounds {
 
     private async getAudioContext(): Promise<AudioContext> {
         if (!this.audioContext) {
-            this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
+            this.audioContext = new (
+  window.AudioContext || (window as typeof window & { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+)()
         }
 
         // Resume context if suspended (required for user gesture)
@@ -104,4 +106,5 @@ export async function playSound(soundName: string): Promise<void> {
 
 export async function initializeSounds(): Promise<void> {
     await gameSounds.initialize()
+
 }
