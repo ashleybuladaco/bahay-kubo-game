@@ -59,20 +59,17 @@ export const unlockVegetable = (vegetableId: string): GardenStats => {
     }
     return current
 }
-
 // Planted Vegetables Management
-export const getPlantedVegetables = (): PlantedVegetable[] => {
-    if (typeof window === 'undefined') return []
+export function getPlantedVegetables(): PlantedVegetable[] {
+    if (typeof localStorage === 'undefined') return []
 
-    try {
-        const stored = localStorage.getItem(STORAGE_KEYS.PLANTED_VEGETABLES)
-        return stored ? JSON.parse(stored) : []
-    } catch {
-        return []
-    }
+    const stored = localStorage.getItem(STORAGE_KEYS.PLANTED_VEGETABLES)
+    return stored ? JSON.parse(stored) : []
 }
 
-export const addPlantedVegetable = (vegetable: Omit<PlantedVegetable, 'id'>): PlantedVegetable => {
+export const addPlantedVegetable = (
+    vegetable: Omit<PlantedVegetable, 'id'>
+): PlantedVegetable => {
     if (typeof window === 'undefined') return { ...vegetable, id: Date.now().toString() }
 
     const planted: PlantedVegetable = {
@@ -87,7 +84,10 @@ export const addPlantedVegetable = (vegetable: Omit<PlantedVegetable, 'id'>): Pl
     return planted
 }
 
-export const updatePlantedVegetable = (id: string, updates: Partial<PlantedVegetable>): PlantedVegetable[] => {
+export const updatePlantedVegetable = (
+    id: string,
+    updates: Partial<PlantedVegetable>
+): PlantedVegetable[] => {
     if (typeof window === 'undefined') return []
 
     const current = getPlantedVegetables()
@@ -99,11 +99,11 @@ export const updatePlantedVegetable = (id: string, updates: Partial<PlantedVeget
     return updated
 }
 
-export const removePlantedVegetable = (id: string): PlantedVegetable[] => {
+export function removePlantedVegetable(id: string): PlantedVegetable[] {
     if (typeof window === 'undefined') return []
 
     const current = getPlantedVegetables()
-    const updated = current.filter(plant => plant.id !== id)
+    const updated = current.filter(p => p.id !== id)
 
     localStorage.setItem(STORAGE_KEYS.PLANTED_VEGETABLES, JSON.stringify(updated))
     return updated
