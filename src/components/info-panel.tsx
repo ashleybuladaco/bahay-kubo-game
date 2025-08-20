@@ -29,10 +29,10 @@ export function InfoPanel({ vegetable, isGameInfo = false, onClose }: InfoPanelP
                             <div className="p-4 bg-green-100 rounded-lg">
                                 <h3 className="font-semibold text-green-800 mb-2">The Song 🎵</h3>
                                 <p className="text-sm text-green-700 italic leading-relaxed">
-                                    "Bahay kubo, kahit munti,<br />
+                                    Bahay kubo, kahit munti,<br />
                                     Ang halaman doon ay sari-sari:<br />
                                     Singkamas at talong, sigarilyas at mani,<br />
-                                    Sitaw, bataw, patani..."
+                                    Sitaw, bataw, patani...
                                 </p>
                             </div>
 
@@ -61,7 +61,7 @@ export function InfoPanel({ vegetable, isGameInfo = false, onClose }: InfoPanelP
                                     <h4 className="font-semibold text-green-800 mb-1">🎓 Educational Value</h4>
                                     <p className="text-sm text-green-700">
                                         This game teaches Filipino children (and adults!) about traditional vegetables
-                                        mentioned in the beloved "Bahay Kubo" song, including their nutritional benefits
+                                        mentioned in the beloved Bahay Kubo song, including their nutritional benefits
                                         and culinary uses in Filipino cooking.
                                     </p>
                                 </div>
@@ -117,4 +117,5 @@ export function InfoPanel({ vegetable, isGameInfo = false, onClose }: InfoPanelP
             </DialogContent>
         </Dialog>
     )
+
 }
